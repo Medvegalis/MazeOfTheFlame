@@ -1,0 +1,102 @@
+[gd_scene load_steps=19 format=3 uid="uid://3n73lpwo3cp"]
+
+[ext_resource type="Script" path="res://Scenes/Test/MazeManager.gd" id="1_ippot"]
+[ext_resource type="Texture2D" uid="uid://ckiolcc8mb8kg" path="res://Texture/Stars.jpg" id="2_3q3xy"]
+[ext_resource type="PackedScene" uid="uid://blj8nog265jes" path="res://Scenes/Test/WallScne.tscn" id="2_ehmbb"]
+[ext_resource type="MeshLibrary" uid="uid://cc6kemehi6li7" path="res://MeshLib/3dWalls.tres" id="2_sx4dh"]
+[ext_resource type="Texture2D" uid="uid://csk4kdk67266p" path="res://Texture/grass_ground.png" id="5_ywvdb"]
+[ext_resource type="PackedScene" uid="uid://c1kpvmmmbwrtw" path="res://Scenes/FirePlace.tscn" id="8_q4xdj"]
+[ext_resource type="PackedScene" uid="uid://cjjfiu2efilal" path="res://Scenes/LightPickUp.tscn" id="9_jacd5"]
+[ext_resource type="Script" path="res://Scripts/GameManager.gd" id="9_kyfo2"]
+[ext_resource type="PackedScene" uid="uid://dvheb5arjvh34" path="res://Scenes/Player.tscn" id="9_qtgvv"]
+[ext_resource type="PackedScene" uid="uid://drloyaeq4wlds" path="res://Scenes/cabin.tscn" id="10_h7kev"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vwgbc"]
+load_path = "res://.godot/imported/rock.png-40222563ab0d42e999644462461f776b.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1xv4h"]
+albedo_texture = SubResource("CompressedTexture2D_vwgbc")
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_f60al"]
+panorama = ExtResource("2_3q3xy")
+
+[sub_resource type="Sky" id="Sky_vt565"]
+sky_material = SubResource("PanoramaSkyMaterial_f60al")
+
+[sub_resource type="Environment" id="Environment_wjsfb"]
+background_mode = 2
+sky = SubResource("Sky_vt565")
+tonemap_mode = 2
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.153668, 0.170653, 0.197356, 1)
+fog_density = 0.04
+fog_sky_affect = 0.4
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_8ybro"]
+points = PackedVector3Array(-250, 0, -250, -250, 0, 250, 250, 0, -250, 250, 0, 250)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x3xio"]
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("5_ywvdb")
+uv1_triplanar = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8i7dn"]
+material = SubResource("StandardMaterial3D_x3xio")
+size = Vector2(500, 500)
+
+[node name="MainScene" type="Node3D"]
+script = ExtResource("1_ippot")
+curved_wall_height = 4.0
+radius = 4.0
+rings_nb = 12
+left_wall_model = ExtResource("2_ehmbb")
+material = SubResource("StandardMaterial3D_1xv4h")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wjsfb")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 19.7757, 0)
+light_color = Color(0.446777, 0.446777, 0.446777, 1)
+light_energy = 5.0
+shadow_enabled = true
+
+[node name="GridMap" type="GridMap" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh_library = ExtResource("2_sx4dh")
+cell_size = Vector3(3, 3, 3)
+cell_scale = 3.0
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("ConvexPolygonShape3D_8ybro")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground/CollisionShape3D"]
+mesh = SubResource("PlaneMesh_8i7dn")
+skeleton = NodePath("../../..")
+
+[node name="Player" parent="." instance=ExtResource("9_qtgvv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24416, 0)
+
+[node name="LightPickUp" parent="." instance=ExtResource("9_jacd5")]
+transform = Transform3D(0.810614, 0, -0.58558, 0, 1, 0, 0.58558, 0, 0.810614, -5.37473, 1.3166, -2.50679)
+
+[node name="LightPickUp2" parent="." instance=ExtResource("9_jacd5")]
+transform = Transform3D(0.810614, 0, -0.58558, 0, 1, 0, 0.58558, 0, 0.810614, -2.55761, 1.3166, -6.40651)
+
+[node name="GameManager" type="Node3D" parent="."]
+script = ExtResource("9_kyfo2")
+countdown_time = 25.0
+
+[node name="FirePlace" parent="." instance=ExtResource("8_q4xdj")]
+transform = Transform3D(-0.614395, 0, -0.788998, 0, 1, 0, 0.788998, 0, -0.614395, 1.61397, 0, -0.29649)
+
+[node name="Cabin2" parent="." instance=ExtResource("10_h7kev")]
+transform = Transform3D(1.4919, 0, -1.17654, 0, 1.9, 0, 1.17654, 0, 1.4919, -0.434287, -0.1, -0.874986)

@@ -1,0 +1,69 @@
+[gd_scene load_steps=13 format=3 uid="uid://g7nyukaithj3"]
+
+[ext_resource type="Script" path="res://Scenes/MazeGeneration/MazeManager.gd" id="1_gulo4"]
+[ext_resource type="PackedScene" uid="uid://blj8nog265jes" path="res://Scenes/MazeGeneration/WallScne.tscn" id="2_6euvs"]
+[ext_resource type="Texture2D" uid="uid://b2yt7dutxlpok" path="res://Texture/rock.png" id="3_t1ql2"]
+[ext_resource type="Texture2D" uid="uid://8r8a55byjyo6" path="res://Texture/Grass.jpg" id="4_nqvrl"]
+[ext_resource type="PackedScene" uid="uid://dvheb5arjvh34" path="res://Scenes/Player.tscn" id="5_sdgtd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ws0hf"]
+albedo_texture = ExtResource("3_t1ql2")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_888go"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_us7dt"]
+sky_material = SubResource("ProceduralSkyMaterial_888go")
+
+[sub_resource type="Environment" id="Environment_ah3q0"]
+background_mode = 2
+sky = SubResource("Sky_us7dt")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fodu7"]
+shading_mode = 0
+albedo_color = Color(0.197937, 0.197937, 0.197937, 1)
+albedo_texture = ExtResource("4_nqvrl")
+uv1_scale = Vector3(2, 2, 2)
+uv1_triplanar = true
+texture_filter = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_rivf1"]
+material = SubResource("StandardMaterial3D_fodu7")
+size = Vector2(300, 300)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_iib4i"]
+points = PackedVector3Array(-50, 0, -50, -50, 0, 50, 50, 0, -50, 50, 0, 50)
+
+[node name="Test" type="Node3D"]
+script = ExtResource("1_gulo4")
+curved_wall_height = 2.0
+radius = 3.0
+rings_nb = 12
+left_wall_model = ExtResource("2_6euvs")
+material = SubResource("StandardMaterial3D_ws0hf")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ah3q0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+mesh = SubResource("PlaneMesh_rivf1")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_iib4i")
+
+[node name="Player" parent="." instance=ExtResource("5_sdgtd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.95924, 5.25113, -0.578697)
+jump_power = 50.0

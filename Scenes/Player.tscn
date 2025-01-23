@@ -1,0 +1,145 @@
+[gd_scene load_steps=22 format=3 uid="uid://dvheb5arjvh34"]
+
+[ext_resource type="Script" path="res://Scripts/Player/PlayerControler.gd" id="1_dppsa"]
+[ext_resource type="PackedScene" uid="uid://d2wivpblm1bb6" path="res://Scenes/GUI.tscn" id="2_6yt4e"]
+[ext_resource type="Script" path="res://Scripts/Player/playerLight.gd" id="2_e40d6"]
+[ext_resource type="Script" path="res://Scripts/Player/CollisionManager.gd" id="5_1xpul"]
+[ext_resource type="AudioStream" uid="uid://o2wtroow8b43" path="res://Sounds/Ambiance_Night_Loop_Stereo.wav" id="5_wnb06"]
+[ext_resource type="AudioStream" uid="uid://qhsorr5jl2hk" path="res://Sounds/PickUpSound.ogg" id="6_iha0j"]
+[ext_resource type="Texture2D" uid="uid://bl50s7lgvny5y" path="res://Texture/smoke_01.png" id="7_cw5e7"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3ls2h"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_qbkmj"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hcuo3"]
+radius = 0.35
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3jv88"]
+noise_type = 0
+seed = 4
+frequency = 0.0397
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_dcw16"]
+noise = SubResource("FastNoiseLite_3jv88")
+
+[sub_resource type="Curve" id="Curve_2v6rg"]
+_data = [Vector2(0.00248756, 1), 0.0, 0.0, 0, 0, Vector2(0.49005, 1), 0.0, 0.0, 0, 0, Vector2(0.753731, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_3k74m"]
+curve = SubResource("Curve_2v6rg")
+
+[sub_resource type="Gradient" id="Gradient_eck4k"]
+offsets = PackedFloat32Array(0, 0.510695, 1)
+colors = PackedColorArray(1, 1, 1, 0.584314, 1, 1, 1, 1, 1, 1, 1, 0.6)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8lnfb"]
+gradient = SubResource("Gradient_eck4k")
+
+[sub_resource type="Curve" id="Curve_wrk6j"]
+_data = [Vector2(0, 0.462453), 0.0, 0.242326, 0, 0, Vector2(0.995025, 0.75903), 0.591391, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_fawrm"]
+curve = SubResource("Curve_wrk6j")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jyr6e"]
+lifetime_randomness = 0.2
+angle_min = 1.07288e-05
+angle_max = 720.0
+direction = Vector3(0, 1, 0)
+spread = 30.0
+initial_velocity_min = 0.1
+initial_velocity_max = 0.6
+gravity = Vector3(0, 0, 0)
+tangential_accel_min = -2.23517e-06
+tangential_accel_max = -2.23517e-06
+damping_min = 1.0
+damping_max = 2.0
+scale_min = 0.2
+scale_max = 0.7
+scale_curve = SubResource("CurveTexture_fawrm")
+color_ramp = SubResource("GradientTexture1D_8lnfb")
+alpha_curve = SubResource("CurveTexture_3k74m")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fregg"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 1, 0.529412)
+albedo_texture = ExtResource("7_cw5e7")
+texture_filter = 0
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_8x2wv"]
+material = SubResource("StandardMaterial3D_fregg")
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_dppsa")
+speed = 10.0
+gravity = 9.0
+jump_power = 6.0
+min_pitch = -80.0
+
+[node name="Gui" parent="." instance=ExtResource("2_6yt4e")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_3ls2h")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+visible = false
+mesh = SubResource("CapsuleMesh_qbkmj")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CapsuleShape3D_hcuo3")
+
+[node name="CollisionManager" type="Node" parent="."]
+script = ExtResource("5_1xpul")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(1, 0.71765, 0.307761, 1)
+light_specular = 1.2
+omni_range = 4096.0
+script = ExtResource("2_e40d6")
+noise = SubResource("NoiseTexture3D_dcw16")
+
+[node name="AudioListener3D" type="AudioListener3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.529716, -0.304533)
+current = true
+
+[node name="SoundManager" type="Node3D" parent="."]
+
+[node name="Ambinet" type="AudioStreamPlayer3D" parent="SoundManager"]
+stream = ExtResource("5_wnb06")
+volume_db = -30.0
+autoplay = true
+
+[node name="PickUp" type="AudioStreamPlayer3D" parent="SoundManager"]
+stream = ExtResource("6_iha0j")
+volume_db = -80.0
+unit_size = 1.0
+max_db = 1.0
+pitch_scale = 2.0
+bus = &"SFX"
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.311056, -0.511904)
+amount = 5
+amount_ratio = 0.2
+speed_scale = 0.35
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_jyr6e")
+draw_pass_1 = SubResource("QuadMesh_8x2wv")
+
+[connection signal="area_entered" from="Area3D" to="CollisionManager" method="_on_area_3d_area_entered"]
+[connection signal="area_exited" from="Area3D" to="CollisionManager" method="_on_area_3d_area_exited"]

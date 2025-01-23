@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cboq4gwh6s5e6"]
+
+[ext_resource type="AudioStream" uid="uid://o2wtroow8b43" path="res://Sounds/Ambiance_Night_Loop_Stereo.wav" id="1_r1fld"]
+[ext_resource type="AudioStream" uid="uid://qhsorr5jl2hk" path="res://Sounds/PickUpSound.ogg" id="2_exb1t"]
+
+[node name="SoundManager" type="Node3D"]
+
+[node name="Ambinet" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("1_r1fld")
+volume_db = -30.0
+autoplay = true
+
+[node name="PickUp" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_exb1t")
+volume_db = -30.0
+autoplay = true

@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://dlged00cfoakg"]
+
+[ext_resource type="Texture2D" uid="uid://ddoxug8gu16dw" path="res://Texture/fire_01.png" id="2_nr3xg"]
+
+[sub_resource type="Gradient" id="Gradient_ukikq"]
+offsets = PackedFloat32Array(0.121324, 0.474265)
+colors = PackedColorArray(0.828068, 0.581804, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_djc1q"]
+gradient = SubResource("Gradient_ukikq")
+
+[sub_resource type="Curve" id="Curve_kleyo"]
+_data = [Vector2(0.01, 0.146113), 0.0, 0.0, 0, 0, Vector2(0.31, 0.982574), 0.0, 0.0, 0, 0, Vector2(1, 0.172252), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_8g7gw"]
+curve = SubResource("Curve_kleyo")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ss6lr"]
+angle_min = 1.07288e-05
+angle_max = 360.0
+direction = Vector3(0, 1, 0)
+spread = 5.0
+initial_velocity_min = 1.0
+initial_velocity_max = 1.0
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 0.999998
+linear_accel_max = 0.999998
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_8g7gw")
+color_ramp = SubResource("GradientTexture1D_djc1q")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h3fnt"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_nr3xg")
+texture_filter = 0
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_kawfn"]
+material = SubResource("StandardMaterial3D_h3fnt")
+
+[node name="Beacon" type="Node3D"]
+
+[node name="Fire" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.78188, 0)
+
+[node name="Flame" type="GPUParticles3D" parent="Fire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0023582, 0.00900459, -0.00431728)
+amount = 16
+process_material = SubResource("ParticleProcessMaterial_ss6lr")
+draw_pass_1 = SubResource("QuadMesh_kawfn")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Fire"]
+light_energy = 0.1
+shadow_enabled = true
+omni_range = 10.0

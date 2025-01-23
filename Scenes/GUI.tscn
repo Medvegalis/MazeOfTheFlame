@@ -1,0 +1,255 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2wivpblm1bb6"]
+
+[ext_resource type="Script" path="res://Scripts/GuiManager.gd" id="1_8cian"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0iuha"]
+font_size = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_ty3vt"]
+font_size = 15
+
+[node name="Gui" type="CanvasLayer"]
+script = ExtResource("1_8cian")
+
+[node name="FiresColected" type="Label" parent="."]
+offset_top = 144.0
+offset_right = 87.0
+offset_bottom = 156.0
+text = "fires:"
+label_settings = SubResource("LabelSettings_0iuha")
+vertical_alignment = 1
+
+[node name="Count" type="Label" parent="FiresColected"]
+layout_mode = 2
+offset_left = 22.0
+offset_top = -5.0
+offset_right = 32.0
+offset_bottom = 18.0
+text = "0"
+label_settings = SubResource("LabelSettings_0iuha")
+vertical_alignment = 1
+
+[node name="BeaconsLeft" type="Label" parent="."]
+offset_top = 155.0
+offset_right = 87.0
+offset_bottom = 167.0
+text = "Beacons:"
+label_settings = SubResource("LabelSettings_0iuha")
+vertical_alignment = 1
+
+[node name="Count" type="Label" parent="BeaconsLeft"]
+layout_mode = 2
+offset_left = 38.0
+offset_top = -5.0
+offset_right = 48.0
+offset_bottom = 18.0
+text = "10"
+label_settings = SubResource("LabelSettings_0iuha")
+vertical_alignment = 1
+
+[node name="ObjectiveText" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -87.0
+offset_top = -24.5
+offset_right = 87.0
+offset_bottom = 24.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimerHeader" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 10
+text = "Time until fire extinguishes:"
+
+[node name="timerValue" type="Label" parent="TimerHeader"]
+layout_mode = 0
+offset_left = 138.0
+offset_right = 178.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 10
+text = "0"
+
+[node name="InteractionText" type="Label" parent="."]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -45.0
+offset_right = 20.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 10
+text = "E - to sleep throught the night"
+
+[node name="Controls" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -14.0
+offset_right = 61.0
+offset_bottom = 9.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 8
+text = "f - place beacon"
+
+[node name="LoadingScreen" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.099986, 0.099986, 0.099986, 1)
+
+[node name="Win" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Win"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.18359, 0.18359, 0.18359, 1)
+
+[node name="Header2" type="Label" parent="Win"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -41.0
+offset_right = 83.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "You survived the night"
+label_settings = SubResource("LabelSettings_ty3vt")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Win"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -25.0
+offset_top = -54.0
+offset_right = 25.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 5
+
+[node name="NextDay" type="Button" parent="Win/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 10
+text = "Next day"
+
+[node name="Exit" type="Button" parent="Win/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 10
+text = "Exit"
+
+[node name="GameOver" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="GameOver"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.18359, 0.18359, 0.18359, 1)
+
+[node name="Header2" type="Label" parent="GameOver"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -41.0
+offset_right = 83.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "You forze to death"
+label_settings = SubResource("LabelSettings_ty3vt")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOver"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -25.0
+offset_top = -54.0
+offset_right = 25.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 5
+
+[node name="Restart" type="Button" parent="GameOver/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 10
+text = "Restart"
+
+[node name="Exit" type="Button" parent="GameOver/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 10
+text = "Exit"
+
+[connection signal="pressed" from="Win/VBoxContainer/NextDay" to="." method="_on_next_day_pressed"]
+[connection signal="pressed" from="Win/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="GameOver/VBoxContainer/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="GameOver/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
